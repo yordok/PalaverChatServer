@@ -55,6 +55,8 @@ io.sockets.on("connection",function(socket){
   socket.join("PublicRoom1");
   //Server logs that a new connection has been made
   console.log("connected to the server");
+  //callback function from the server to let the client know that they have connected
+  socket.emit("message",{username: "SERVER", message:"You have connected"});
 
 	onConnected(socket);
 	onDisconnect(socket);
