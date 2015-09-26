@@ -24,7 +24,7 @@ var onConnected = function(socket){
   //messageAll listener
   socket.on("messageAll",function(data){
         //sends the message to everone in the room Public Room 1
-    		socket.broadcast.to('PublicRoom1').emit('message', data.username + " : " + data.message );
+    		socket.broadcast.to('PublicRoom1').emit('message', socket.username + " : " + data.message );
   });
 }
 
