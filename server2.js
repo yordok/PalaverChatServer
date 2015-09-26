@@ -16,6 +16,12 @@ server.listen(port);
 
 //onConnected event handler body
 var onConnected = function(socket){
+  socket.on("join", function(data) {
+	  socket.emit("message",username: "SERVER", message:"You have connected");
+  }
+}
+
+var onMessage = function(socket){
   //on message listener
   socket.on("messageServer",function(data){
     //all this does is messages the server and logs this server side, used for testing puposes
@@ -24,9 +30,10 @@ var onConnected = function(socket){
   //messageAll listener
   socket.on("messageAll",function(data){
         //sends the message to everone in the room Public Room 1
-    		socket.broadcast.to('PublicRoom1').emit('message', socket.username + " : " + data.message );
+    		socket.broadcast.to('PublicRoom1').emit('message', data.username.toString() + " : " + data.message.toString());
   });
 }
+
 
 //this method attached the handler onConnected to a new socket when it has connected
 io.sockets.on("connection",function(socket){
@@ -41,5 +48,6 @@ io.sockets.on("connection",function(socket){
   console.log("connected to the server");
 
 	onConnected(socket);
+	onMessage(socket);
 
 });
