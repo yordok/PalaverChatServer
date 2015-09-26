@@ -1,0 +1,21 @@
+{
+  "name": "HerokuServer",
+  "version": "0.0.0",
+  "description": "Heroku Test App",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "author": "Jordan Karlsruher",
+  "license": "BSD-2-Clause",
+  "dependencies": {
+    "express": "^4.4.5",
+    "ws": "0.4.x",
+    "socket.io": "~1.3.7",
+    "socket.io-client": "~1.3.7"
+  },
+  "engines": {
+    "node": "0.10.x"
+  }
+}
