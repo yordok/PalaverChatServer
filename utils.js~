@@ -5,5 +5,4 @@ var getRandomName = function(){
 	xmlhttp.open("GET","ajax_info.txt",true);
 	
 }
-
 module.exports.getRandomName = getRandomName;
