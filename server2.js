@@ -53,6 +53,8 @@ io.sockets.on("connection",function(socket){
 
   //adds everyone to the same public room
   socket.join("PublicRoom1");
+  //on connect, tell the room you have connected
+  socket.broadcast.to('PublicRoom1').emit('message', {username: 'server', message: socket.username + " has joined and connected to the room."});
   //Server logs that a new connection has been made
   console.log("connected to the server");
   //callback function from the server to let the client know that they have connected
