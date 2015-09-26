@@ -2,6 +2,7 @@ var app = require('express')();
 var server = require('http').Server(app);
 var io = require('socket.io')(server);
 var port = process.env.PORT || 5000;
+var util = require('./utils.js');
 //including the proper filed and setting a port
 //also creating the server object
 
@@ -44,8 +45,8 @@ var onDisconnect = function(socket){
 }
 
 
-//this method attached the handler onConnected to a new socket when it has connected
 io.sockets.on("connection",function(socket){
+//this method attached the handler onConnected to a new socket when it has connected
   //generates a random username for the new socket
   socket.username =  "user"+Math.floor((Math.random() * 10000) + 1);
   //adds the new socket to the client list
