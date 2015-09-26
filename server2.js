@@ -17,12 +17,9 @@ server.listen(port);
 //onConnected event handler body
 var onConnected = function(socket){
   socket.on("join", function(data) {
-	  socket.emit("message",username: "SERVER", message:"You have connected");
-  }
-}
-
-var onMessage = function(socket){
-  //on message listener
+	  socket.emit("message",{username: "SERVER", message:"You have connected"});
+  });
+   //on message listener
   socket.on("messageServer",function(data){
     //all this does is messages the server and logs this server side, used for testing puposes
     console.log(data.username.toString() + " : " + data.message.toString());
@@ -30,8 +27,20 @@ var onMessage = function(socket){
   //messageAll listener
   socket.on("messageAll",function(data){
         //sends the message to everone in the room Public Room 1
-    		socket.broadcast.to('PublicRoom1').emit('message', {username:data.username.toString(), message:data.message.toString()});
+    		socket.broadcast.to('PublicRoom1').emit('message', {username:socket.username.toString(), message:data.message.toString()});
   });
+}
+
+var onDisconnect = function(socket){
+	socket.on("disconnect", function(data) {
+        
+		socket.broadcast.to('PublicRoom1').emit('message', {username: 'server', message: socket.username + " has left the room."});
+        
+		socket.leave('room1');
+        
+		delete clients[socket.name];
+	});
+	
 }
 
 
@@ -48,6 +57,6 @@ io.sockets.on("connection",function(socket){
   console.log("connected to the server");
 
 	onConnected(socket);
-	onMessage(socket);
+	onDisconnect(socket);
 
 });
