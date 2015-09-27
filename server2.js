@@ -47,7 +47,7 @@ var onDisconnect = function(socket){
     var index = clients.indexOf(socket);
 
     if (index > -1) {
-      array.splice(index, 1);
+      clients.splice(index, 1);
     }
 	});
 
