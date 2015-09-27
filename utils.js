@@ -6,6 +6,7 @@ var getClientListasString = function(clientList){
 	for(var j = 0; j < clientList.length; j++){
 		list += clientList[j].username + " , ";
 	}
+	return list;
 
 }
 
