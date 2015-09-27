@@ -32,13 +32,18 @@ var onConnected = function(socket){
 }
 
 var onDisconnect = function(socket){
-	socket.on("disconnect", function(data) {
+	socket.on("disconnect", function() {
 
 		socket.broadcast.to('PublicRoom1').emit('message', {username: 'server', message: socket.username + " has left the room."});
 
 		socket.leave('room1');
 
-		delete clients[socket.name];
+
+    var index = clients.indexOf(socket);
+
+    if (index > -1) {
+      array.splice(index, 1);
+    }
 	});
 
 }
