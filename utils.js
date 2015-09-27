@@ -11,13 +11,26 @@ var getClientListasString = function(clientList){
 }
 var getTimestamp = function(){
 	var d = new Date();
+	var fullTime = "";
+	var am_pm = "";
+	if(d.getHours() >= 12){
+		am_pm = "PM";
+		fullTime += (d.getHours() % 12) + 1;
+	}
+	else{
+		am_pm = "AM";
+		fullTime += d.getHours() + 1;
+	}
+	fullTime += ":" +d.getMinutes() + " " + am_pm;
+
+	return fullTime.toString();
 
 }
 var getDatestamp = function(){
 	var d = new Date();
 	var fullDate ="";
-	fullDate += d.getMonth() + "/";
 	fullDate += d.getDate() + "/";
+	fullDate += (d.getMonth() +1) + "/";
 	fullDate += d.getFullYear();
 
 	return fullDate;
