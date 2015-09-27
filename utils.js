@@ -16,12 +16,12 @@ var getTimestamp = function(){
 	var hours = d.getUTCHours();
 	if(hours >= 12){
 		am_pm = "PM";
-		var h = (hours % 12) + 1;
+		var h = (hours % 12);
 		fullTime += h
 	}
 	else{
 		am_pm = "AM";
-		fullTime += hours + 1;
+		fullTime += hours;
 	}
 	var mins = d.getUTCMinutes();
 	if(mins < 10){
