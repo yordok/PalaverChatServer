@@ -32,7 +32,7 @@ var onConnected = function(socket){
 
   socket.on("requestClientList", function(){
       //requests and returs the client list as a string
-      socket.emit({"message":util.getClientListasString(clients), username: "server"});
+      socket.emit('message',{"message":util.getClientListasString(clients), username: "server"});
   });
 }
 
