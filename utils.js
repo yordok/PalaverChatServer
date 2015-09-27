@@ -13,7 +13,7 @@ var getTimestamp = function(){
 	var d = new Date();
 	var fullTime = "";
 	var am_pm = "";
-	var hours = d.getHours();
+	var hours = d.getUTCHours();
 	if(hours >= 12){
 		am_pm = "PM";
 		var h = (hours % 12) + 1;
@@ -23,11 +23,12 @@ var getTimestamp = function(){
 		am_pm = "AM";
 		fullTime += hours + 1;
 	}
-	if(d.getMinutes() < 10){
-		fullTime += ":0" +d.getMinutes() + " " + am_pm;
+	var mins = d.getUTCMinutes();
+	if(mins < 10){
+		fullTime += ":0" +mins + " " + am_pm;
 	}
 	else{
-		fullTime += ":" +d.getMinutes() + " " + am_pm;
+		fullTime += ":" +mins + " " + am_pm;
 	}
 
 
