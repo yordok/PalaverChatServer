@@ -13,15 +13,23 @@ var getTimestamp = function(){
 	var d = new Date();
 	var fullTime = "";
 	var am_pm = "";
-	if(d.getHours() >= 12){
+	var hours = d.getHours();
+	if(hours >= 12){
 		am_pm = "PM";
-		fullTime += (d.getHours() % 12) + 1;
+		var h = (hours % 12) + 1;
+		fullTime += h
 	}
 	else{
 		am_pm = "AM";
-		fullTime += d.getHours() + 1;
+		fullTime += hours + 1;
 	}
-	fullTime += ":" +d.getMinutes() + " " + am_pm;
+	if(d.getMinutes() < 10){
+		fullTime += ":0" +d.getMinutes() + " " + am_pm;
+	}
+	else{
+		fullTime += ":" +d.getMinutes() + " " + am_pm;
+	}
+
 
 	return fullTime.toString();
 
