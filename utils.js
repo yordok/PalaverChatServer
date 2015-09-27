@@ -9,6 +9,19 @@ var getClientListasString = function(clientList){
 	return list;
 
 }
+var getTimestamp = function(){
+	var d = new Date();
+
+}
+var getDatestamp = function(){
+	var d = new Date();
+	var fullDate ="";
+	fullDate += d.getMonth() + "/";
+	fullDate += d.getDate() + "/";
+	fullDate += d.getFullYear();
+
+	return fullDate;
+}
 
 var getRandomName = function(){
 	var name = "";
@@ -338,5 +351,7 @@ var getRandomColor = function(){
 
 
 module.exports.getClientListasString = getClientListasString;
+module.exports.getTimestamp = getTimestamp;
+module.exports.getDatestamp = getDatestamp;
 module.exports.getRandomColor = getRandomColor;
 module.exports.getRandomName = getRandomName;
