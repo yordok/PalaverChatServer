@@ -17,6 +17,7 @@ socket.on("connect", function(){
   setInterval(function(){
     //socket.emit("messageServer", { username:"TEST", message:"CONNECTION TEST ESTABLISHED" });
     socket.emit("messageAll", { username:userName, message:"CONNECTION TEST ESTABLISHED" });
+    socket.emit("requestClientList");
 
   }, 5000);
 

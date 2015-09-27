@@ -1,6 +1,14 @@
 var colorsData = [];
 var animalsData = [];
 
+var getClientListasString = function(clientList){
+	var list = ""
+	for(var j = 0; j < clientList.length; j++){
+		list += clientList[j].username + " , ";
+	}
+
+}
+
 var getRandomName = function(){
 	var name = "";
 	name += colorsData[Math.floor((Math.random() * colorsData.length))] + " ";
@@ -328,6 +336,6 @@ var getRandomColor = function(){
 
 
 
-
+module.exports.getClientListasString = getClientListasString;
 module.exports.getRandomColor = getRandomColor;
 module.exports.getRandomName = getRandomName;

@@ -1,7 +1,7 @@
 var app = require('express')();
 var server = require('http').Server(app);
 var io = require('socket.io')(server);
-var port = process.env.PORT || 5000;
+var port = 23302;
 var util = require('./utils.js');
 //including the proper filed and setting a port
 //also creating the server object
@@ -28,6 +28,11 @@ var onConnected = function(socket){
   socket.on("messageAll",function(data){
         //sends the message to everone in the room Public Room 1
     		socket.broadcast.to('PublicRoom1').emit('message', {username:data.username.toString(), message:data.message.toString()});
+  });
+
+  socket.on("requestClientList", function(){
+      //requests and returs the client list as a string
+      socket.emit("message", util.getClientListasString());
   });
 }
 
