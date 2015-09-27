@@ -1,7 +1,7 @@
 var app = require('express')();
 var server = require('http').Server(app);
 var io = require('socket.io')(server);
-var port = process.env.PORT || 5000;
+var port =  23222;
 var util = require('./utils.js');
 //including the proper filed and setting a port
 //also creating the server object
