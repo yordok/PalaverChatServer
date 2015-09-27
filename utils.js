@@ -31,7 +31,7 @@ var getRandomColor = function(){
 				color += "e";
 		}
 		else if(num == 15){
-				color += "g";
+				color += "f";
 		}
 		else{
 			color += 0;
