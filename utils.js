@@ -1,9 +1,301 @@
-var getRandomName = function(){
-	var xmlhttp = new XMLHttpRequest();
-	var url = "./animals.json";
+var request = require("request");
+var colorsData = [];
+var animalsData = [];
 
-	xmlhttp.open("GET","ajax_info.txt",true);
-	
+var getRandomName = function(){
+	var name = "";
+	name += colorsData[Math.floor((Math.random() * colorsData.length))] + " ";
+	name += animalsData[Math.floor((Math.random() * animalsData.length))];
+	return name;
 }
 
+var getRandomColor = function(){
+	var color = "";
+	for(var i =0; i < 6; i++){
+		var num = Math.floor((Math.random() * 16));
+		if(num < 10){
+			color += num;
+		}
+		else if(num == 10){
+				color += "a";
+		}
+		else if(num == 11){
+				color += "b";
+		}
+		else if(num == 12){
+				color += "c";
+		}
+		else if(num == 13){
+				color += "d";
+		}
+		else if(num == 14){
+				color += "e";
+		}
+		else if(num == 15){
+				color += "g";
+		}
+		else{
+			color += 0;
+		}
+	}
+	console.log(color);
+	return color;
+}
+
+
+
+
+	var colorsData = [
+		"red",
+		"green",
+		"blue",
+		"orange",
+		"yellow",
+		"teal",
+		"purple",
+		"violet",
+		"black",
+		"white",
+		"gray",
+		"crimson",
+		"magenta",
+		"indigo",
+		"copper",
+		"pink",
+		"lilac",
+		"mahogany",
+		"brown"
+	];
+	var animalsData = [
+	  "aardvark",
+	  "albatross",
+	  "alligator",
+	  "alpaca",
+	  "ant",
+	  "anteater",
+	  "antelope",
+	  "ape",
+	  "armadillo",
+	  "donkey",
+	  "baboon",
+	  "badger",
+	  "barracuda",
+	  "bat",
+	  "bear",
+	  "beaver",
+	  "bee",
+	  "bison",
+	  "boar",
+	  "buffalo",
+	  "butterfly",
+	  "camel",
+	  "capybara",
+	  "caribou",
+	  "cassowary",
+	  "cat",
+	  "caterpillar",
+	  "cattle",
+	  "chamois",
+	  "cheetah",
+	  "chicken",
+	  "chimpanzee",
+	  "chinchilla",
+	  "chough",
+	  "clam",
+	  "cobra",
+	  "cockroach",
+	  "cod",
+	  "cormorant",
+	  "coyote",
+	  "crab",
+	  "crane",
+	  "crocodile",
+	  "crow",
+	  "curlew",
+	  "deer",
+	  "dinosaur",
+	  "dog",
+	  "dogfish",
+	  "dolphin",
+	  "donkey",
+	  "dotterel",
+	  "dove",
+	  "dragonfly",
+	  "duck",
+	  "dugong",
+	  "dunlin",
+	  "eagle",
+	  "echidna",
+	  "eel",
+	  "eland",
+	  "elephant",
+	  "elk",
+	  "emu",
+	  "falcon",
+	  "ferret",
+	  "finch",
+	  "fish",
+	  "flamingo",
+	  "fly",
+	  "fox",
+	  "frog",
+	  "gaur",
+	  "gazelle",
+	  "gerbil",
+	  "giraffe",
+	  "gnat",
+	  "gnu",
+	  "goat",
+	  "goose",
+	  "goldfinch",
+	  "goldfish",
+	  "gorilla",
+	  "goshawk",
+	  "grouse",
+	  "guanaco",
+	  "gull",
+	  "hamster",
+	  "hare",
+	  "hawk",
+	  "hedgehog",
+	  "heron",
+	  "herring",
+	  "hornet",
+	  "horse",
+	  "human",
+	  "hyena",
+	  "ibex",
+	  "ibis",
+	  "jackal",
+	  "jaguar",
+	  "jay",
+	  "jellyfish",
+	  "kangaroo",
+	  "kingfisher",
+	  "koala",
+	  "kookabura",
+	  "kouprey",
+	  "kudu",
+	  "lapwing",
+	  "lark",
+	  "lemur",
+	  "leopard",
+	  "lion",
+	  "llama",
+	  "lobster",
+	  "locust",
+	  "loris",
+	  "louse",
+	  "lyrebird",
+	  "magpie",
+	  "mallard",
+	  "manatee",
+	  "mandrill",
+	  "mantis",
+	  "marten",
+	  "meerkat",
+	  "mink",
+	  "mole",
+	  "mongoose",
+	  "monkey",
+	  "moose",
+	  "mouse",
+	  "mosquito",
+	  "mule",
+	  "narwhal",
+	  "newt",
+	  "octopus",
+	  "okapi",
+	  "opossum",
+	  "oryx",
+	  "ostrich",
+	  "otter",
+	  "owl",
+	  "ox",
+	  "oyster",
+	  "panther",
+	  "parrot",
+	  "partridge",
+	  "peafowl",
+	  "pelican",
+	  "penguin",
+	  "pheasant",
+	  "pig",
+	  "pigeon",
+	  "polar-bear",
+	  "pony",
+	  "porcupine",
+	  "porpoise",
+	  "quail",
+	  "quelea",
+	  "quetzal",
+	  "rabbit",
+	  "raccoon",
+	  "rail",
+	  "ram",
+	  "rat",
+	  "raven",
+	  "red-deer",
+	  "red-panda",
+	  "reindeer",
+	  "rhinoceros",
+	  "rook",
+	  "salamander",
+	  "salmon",
+	  "sand-dollar",
+	  "sandpiper",
+	  "sardine",
+	  "scorpion",
+	  "sea-lion",
+	  "sea-urchin",
+	  "seahorse",
+	  "seal",
+	  "shark",
+	  "sheep",
+	  "shrew",
+	  "skunk",
+	  "snail",
+	  "snake",
+	  "sparrow",
+	  "spider",
+	  "spoonbill",
+	  "squid",
+	  "squirrel",
+	  "starling",
+	  "stingray",
+	  "stinkbug",
+	  "stork",
+	  "swallow",
+	  "swan",
+	  "tapir",
+	  "tarsier",
+	  "termite",
+	  "tiger",
+	  "toad",
+	  "trout",
+	  "turkey",
+	  "turtle",
+	  "vicu�a",
+	  "viper",
+	  "vulture",
+	  "wallaby",
+	  "walrus",
+	  "wasp",
+	  "weasel",
+	  "whale",
+	  "wolf",
+	  "wolverine",
+	  "wombat",
+	  "woodcock",
+	  "woodpecker",
+	  "worm",
+	  "wren",
+	  "yak",
+	  "zebra"
+	];
+
+
+
+
+module.exports.getRandomColor = getRandomColor;
 module.exports.getRandomName = getRandomName;

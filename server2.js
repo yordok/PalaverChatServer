@@ -6,7 +6,6 @@ var util = require('./utils.js');
 //including the proper filed and setting a port
 //also creating the server object
 
-
 var clients = [];
 var roomKeys = []
 var publicRooms = 1;
@@ -34,21 +33,25 @@ var onConnected = function(socket){
 
 var onDisconnect = function(socket){
 	socket.on("disconnect", function(data) {
-        
+
 		socket.broadcast.to('PublicRoom1').emit('message', {username: 'server', message: socket.username + " has left the room."});
-        
+
 		socket.leave('room1');
-        
+
 		delete clients[socket.name];
 	});
-	
+
 }
 
 
 io.sockets.on("connection",function(socket){
 //this method attached the handler onConnected to a new socket when it has connected
   //generates a random username for the new socket
-  socket.username =  "user"+Math.floor((Math.random() * 10000) + 1);
+  socket.username =  util.getRandomName();
+  //generates a random color to associate with this user
+  socket.color = util.getRandomColor();
+  //send the color and username created by the server back to the user for storage
+  socket.emit("receiveUserMetadata", {username:socket.username, usercolor:socket.color});
   //adds the new socket to the client list
   clients.push(socket);
 
