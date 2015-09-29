@@ -1,11 +1,21 @@
 var io = require('socket.io-client');
 //var socket = io.connect("https://palaver-server.herokuapp.com/");//used to connect to the heroku server
 var socket = io.connect("http://localhost:5000");//used to connect to the localhost for testing
+var readline = require('readline');
+
+//Setup readline interface
+var rl = readline.createInterface({
+  input: process.stdin,
+  output: process.stdout
+});
 
 console.log("trying to connect")
 var userName = process.argv[2];
 var trip = process.argv[3];
 var userColor = "";
+
+var EventLog = [];
+var ChatLog = [];
 
 //Set blank strings if username or trip are not defined
 if(userName == undefined)
@@ -16,32 +26,60 @@ if(trip == undefined)
 
 //run this client if you want to test to see if the server is running
 socket.on("connect", function(){
-  console.log("connection established");
+  LogEvent("connection established");
   //inital connection
 
   socket.emit("join", { username:userName, tripCode: trip, message:"CONNECTION TEST ESTABLISHED" });
 
-  //this interval will send a message to all users and the server to test.
-  //it will send the messages every 5 seconds
-  setInterval(function(){
-    //socket.emit("messageServer", { username:"TEST", message:"CONNECTION TEST ESTABLISHED" });
-    socket.emit("messageAll", { username:userName, tripCode: trip, message:"CONNECTION TEST ESTABLISHED" });
-    socket.emit("requestClientList");
-
-  }, 5000);
-
 	//when a message is recieved
 	socket.on("message",function(data){
-	  console.log(data.username + ": " + data.message);
+	  LogMessage(data.username + ": " + data.message);
 	});
 
   socket.on("receiveUserMetadata", function(data){
     userName = data.username.toString();
     userColor = data.usercolor.toString();
-    console.log(data.username + " " + data.usercolor);
+    LogEvent(data.username + " " + data.usercolor);
   });
 
-
-
+  rl.on("line", function(data){SendMessage(data);});
 
 });
+
+function Refresh()
+{
+  for(var i = 0; i < EventLog.length; i++)
+    console.log(EventLog[i]);
+
+  clear();
+
+  for(var i = 0; i < ChatLog.length; i++)
+    console.log(ChatLog[i]);
+}
+
+function LogEvent(data)
+{
+  EventLog.push(data);
+  Refresh();
+}
+
+function LogMessage(data)
+{
+  ChatLog.push(data);
+  Refresh();
+}
+
+function SendMessage(data)
+{
+  var obj = {username: userName, message:data};
+  socket.emit("messageAll", obj);
+  Refresh();
+}
+
+function clear()
+{
+  var lines = process.stdout.getWindowSize()[1] - EventLog.length - ChatLog.length - 1;
+  for(var i = 0; i < lines; i++) {
+    console.log('|');
+  }
+}

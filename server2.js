@@ -54,13 +54,14 @@ var onConnected = function(socket){
   });
   //messageAll listener
   socket.on("messageAll",function(data){
-        //sends the message to everone in the room Public Room 1
-    		socket.broadcast.to('PublicRoom1').emit('message', {time:util.getTimestamp() , date:util.getDatestamp(), username:data.username.toString(), message:data.message.toString()});
+    //sends the message to everone in the room Public Room 1
+    //socket.broadcast.to('PublicRoom1').emit('message', {time:util.getTimestamp() , date:util.getDatestamp(), username:data.username.toString(), message:data.message.toString()});
+    socket.emit('message', {time:util.getTimestamp() , date:util.getDatestamp(), username:data.username.toString(), message:data.message.toString()});
   });
 
   socket.on("requestClientList", function(){
-      //requests and returs the client list as a string
-      socket.emit('message',{"message":util.getClientListasString(clients), username: "server"});
+    //requests and returs the client list as a string
+    socket.emit('message',{"message":util.getClientListasString(clients), username: "server"});
   });
 }
 
