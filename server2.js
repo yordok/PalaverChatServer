@@ -41,7 +41,7 @@ var onConnected = function(socket){
     //send the color and username created by the server back to the user for storage
     socket.emit("receiveUserMetadata", {username:socket.username, usercolor:socket.color});
 
-	  socket.emit("message",{username: "SERVER", message: socket.username + " has connected"});
+	  io.sockets.to('PublicRoom1').emit('message', {username: 'SERVER', message: socket.username + " has joined and connected to the room."});
 
     //Log that the connection has been made
     console.log(socket.username + " has connected");
@@ -55,8 +55,8 @@ var onConnected = function(socket){
   //messageAll listener
   socket.on("messageAll",function(data){
     //sends the message to everone in the room Public Room 1
-    //socket.broadcast.to('PublicRoom1').emit('message', {time:util.getTimestamp() , date:util.getDatestamp(), username:data.username.toString(), message:data.message.toString()});
-    socket.emit('message', {time:util.getTimestamp() , date:util.getDatestamp(), username:data.username.toString(), message:data.message.toString()});
+    io.sockets.to('PublicRoom1').emit('message', {time:util.getTimestamp() , date:util.getDatestamp(), username:data.username.toString(), message:data.message.toString()});
+    //socket.emit('message', {time:util.getTimestamp() , date:util.getDatestamp(), username:data.username.toString(), message:data.message.toString()});
   });
 
   socket.on("requestClientList", function(){
@@ -70,7 +70,9 @@ var onDisconnect = function(socket){
 
 		socket.broadcast.to('PublicRoom1').emit('message', {username: 'server', message: socket.username + " has left the room."});
 
-		socket.leave('room1');
+		socket.leave('PublicRoom1');
+
+    console.log(socket.username + " has left.");
 
     var index = clients.indexOf(socket);
 
@@ -90,9 +92,7 @@ io.sockets.on("connection",function(socket){
   //adds everyone to the same public room
   socket.join("PublicRoom1");
   //on connect, tell the room you have connected
-  socket.broadcast.to('PublicRoom1').emit('message', {username: 'server', message: socket.username + " has joined and connected to the room."});
 
 	onConnected(socket);
 	onDisconnect(socket);
-
 });
