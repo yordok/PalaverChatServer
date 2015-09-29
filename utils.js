@@ -81,12 +81,8 @@ var getRandomColor = function(){
 			color += 0;
 		}
 	}
-	console.log(color);
 	return color;
 }
-
-
-
 
 	var colorsData = [
 		"austere",
