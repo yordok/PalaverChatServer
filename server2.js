@@ -25,20 +25,14 @@ var onConnected = function(socket){
     //all this does is messages the server and logs this server side, used for testing puposes
     console.log(data.username.toString() + " : " + data.message.toString());
   });
-  //messageAll listener
-  socket.on("messageAll",function(data){
-        //sends the message to everone in the room Public Room 1
-    		socket.broadcast.to('PublicRoom1').emit('message', {username:socket.username.toString(), message:data.message.toString()});
-  });
+
   //message a specific room listener
   socket.on("messageRoom",function(data){
         console.log(socket.username);
         console.log(data.message);
         var exists = roomHandler.checkRoomExist(socket.currentRooms, data.roomName);
         if(exists == true){
-          var room = roomHandler.retrieveRoomObject(WorldRooms, data.roomName);
-          console.log(room.name);
-          socket.broadcast.to(room.name.toString()).emit('message', {roomName:data.roomName ,username:socket.username.toString(), message:data.message.toString()});
+          socket.broadcast.to(data.roomName.emit('message', {roomName:data.roomName ,username:socket.username, message:data.message});
         }
         else{
           SendServerMessage(socket, "You are not in a room called " + data.roomName);
@@ -102,7 +96,7 @@ var onRoomCreateDestroy = function(socket){
       //check to see if the room has been joined by this user already
       var hasJoined = roomHandler.checkRoomExist(socket.currentRooms, data.roomName);
       if(hasJoined == false){
-        socket.broadcast.to(data.roomName).emit('message', {roomName:data.roomName, username:data.username.toString(), message:socket.username +" has joined the room."});
+        socket.broadcast.to(data.roomName).emit('message', {roomName:data.roomName, username:data.username, message:socket.username +" has joined the room."});
         SendServerMessage(socket, "You have successfully joined the room " + data.roomName);
         socket.currentRooms.push(roomHandler.retrieveRoomObject(WorldRooms, data.roomName));
       }
