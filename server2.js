@@ -54,7 +54,7 @@ var onRoomJoinLeave = function(socket){
   socket.on("joinRoom", function(data){
     var exists = roomHandler.checkRoomExist(WorldRooms, data.roomName);
     if(exists == true){
-      socket.broadcast.to(data.roomName).emit('message', {time:util.getTimestamp() , date:util.getDatestamp(), username:data.username.toString(), message:socket.username +" has joined the room."});
+      socket.broadcast.to(data.roomName).emit('message', {username:data.username.toString(), message:socket.username +" has joined the room."});
       SendServerMessage(socket, "You have successfully joined the room " + data.roomName);
       socket.currentRooms.push(data.roomName);
     }
@@ -163,15 +163,9 @@ io.sockets.on("connection",function(socket){
   //the rooms that the client is connected to
   socket.currentRooms = [];
 
-  //adds everyone to the same public room
-  socket.join("PublicRoom1");
-  //on connect, tell the room you have connected
-  socket.broadcast.to('PublicRoom1').emit('message', {username: 'server', message: socket.username + " has joined and connected to the room."});
   //Server logs that a new connection has been made
   console.log("connected to the server");
   //callback function from the server to let the client know that they have connected
-  socket.emit("message",{username: "SERVER", message:"You have connected"});
-
 	onConnected(socket);
 	onDisconnect(socket);
   onRoomJoinLeave(socket);
