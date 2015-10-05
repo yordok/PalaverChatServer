@@ -28,7 +28,7 @@ var onConnected = function(socket){
   //messageAll listener
   socket.on("messageAll",function(data){
         //sends the message to everone in the room Public Room 1
-    		socket.broadcast.to('PublicRoom1').emit('message', {time:util.getTimestamp() , date:util.getDatestamp(), username:socket.username.toString(), message:data.message.toString()});
+    		socket.broadcast.to('PublicRoom1').emit('message', {username:socket.username.toString(), message:data.message.toString()});
   });
   //message a specific room listener
   socket.on("messageRoom",function(data){
@@ -37,7 +37,7 @@ var onConnected = function(socket){
         if(exists == true){
           var room = roomHandler.retrieveRoomObject(WorldRooms, data.roomName);
           console.log(room.name);
-          socket.broadcast.to(room.name.toString()).emit('message', {roomName:data.roomName ,time:util.getTimestamp() , date:util.getDatestamp(), username:socket.username.toString(), message:data.message.toString()});
+          socket.broadcast.to(room.name.toString()).emit('message', {roomName:data.roomName ,username:socket.username.toString(), message:data.message.toString()});
         }
         else{
           SendServerMessage(socket, "You are not in a room called " + data.roomName);
