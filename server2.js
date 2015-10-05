@@ -101,7 +101,7 @@ var onRoomCreateDestroy = function(socket){
       //check to see if the room has been joined by this user already
       var hasJoined = roomHandler.checkRoomExist(socket.currentRooms, data.roomName);
       if(hasJoined == false){
-        socket.broadcast.to(data.roomName).emit('message', {time:util.getTimestamp() , date:util.getDatestamp(), username:data.username.toString(), message:socket.username +" has joined the room."});
+        socket.broadcast.to(data.roomName).emit('message', {roomName:data.roomName, username:data.username.toString(), message:socket.username +" has joined the room."});
         SendServerMessage(socket, "You have successfully joined the room " + data.roomName);
         socket.currentRooms.push(roomHandler.retrieveRoomObject(WorldRooms, data.roomName));
       }
@@ -110,7 +110,7 @@ var onRoomCreateDestroy = function(socket){
       }
     }
     else{
-      socket.emit("message", {message:"You have created a new room called " + data.roomName, username:"server"});
+      socket.emit("message", {roomName: data.roomName, message:"You have created a new room called " + data.roomName, username:"server"});
       var nRoom = roomHandler.createNewRoom(data.roomName,socket);
       WorldRooms.push(nRoom);
       socket.currentRooms.push(nRoom);
