@@ -1,6 +1,7 @@
 var io = require('socket.io-client');
-var socket = io.connect("https://palaver-server.herokuapp.com/");//used to connect to the heroku server
-//var socket = io.connect("http://localhost:5000");//used to connect to the localhost for testing
+//var socket = io.connect("https://palaver-server.herokuapp.com/");//used to connect to the heroku server
+var stdin = process.stdin;
+var socket = io.connect("http://localhost:5000");//used to connect to the localhost for testing
 
 console.log("trying to connect")
 var userName = ""
@@ -16,8 +17,8 @@ socket.on("connect", function(){
   //it will send the messages every 5 seconds
   setInterval(function(){
     //socket.emit("messageServer", { username:"TEST", message:"CONNECTION TEST ESTABLISHED" });
-    socket.emit("messageAll", { username:userName, message:"CONNECTION TEST ESTABLISHED" });
-    socket.emit("requestClientList");
+    //socket.emit("messageAll", { username:userName, message:"CONNECTION TEST ESTABLISHED" });
+    //socket.emit("requestClientList");
 
   }, 5000);
 
@@ -31,7 +32,28 @@ socket.on("connect", function(){
     userColor = data.usercolor.toString();
     console.log(data.username + " " + data.usercolor);
   });
+  stdin.on('data', function (data) {
+    var Str = data.toString().substr(0, data.length -1);
+    console.log(Str);
+    //console.log(data.toString().substr(0,) + "|");
+      if(Str.substr(0,8) == "/newroom"){
+        var name = Str.substr(9);
+        socket.emit("roomTryJoinCreate",{roomName:name});
+      }
+      if(Str.substr(0,9) == "/allrooms"){
+        console.log('ass');
+        socket.emit("requestAllRooms");
+      }
+      if(Str.substr(0,8) == "/myrooms"){
+        socket.emit("requestAllRooms");
+      }
+      if(Str.substr(0,8) == "/message"){
+        var name = Str.substr(9);
+        console.log("asd")
+        socket.emit("messageRoom", {roomName:name, message:"TEST TO THIS ROOM",username:userName});
+      }
 
+  });
 
 
 

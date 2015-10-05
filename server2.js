@@ -3,11 +3,12 @@ var server = require('http').Server(app);
 var io = require('socket.io')(server);
 var port = process.env.PORT;
 var util = require('./utils.js');
+var roomHandler = require('./roomHandler.js');
 //including the proper filed and setting a port
 //also creating the server object
 
 var clients = [];
-var roomKeys = []
+var WorldRooms = [];
 var publicRooms = 1;
 //above are server variables
 
@@ -29,11 +30,104 @@ var onConnected = function(socket){
         //sends the message to everone in the room Public Room 1
     		socket.broadcast.to('PublicRoom1').emit('message', {time:util.getTimestamp() , date:util.getDatestamp(), username:data.username.toString(), message:data.message.toString()});
   });
+  //message a specific room listener
+  socket.on("messageRoom",function(data){
+        var exists = roomHandler.checkRoomExist(socket.currentRooms, data.roomName);
+        if(exists == true){
+          console.log("messageRoom was called");
+
+          socket.broadcast.to(data.roomName).emit('message', {time:util.getTimestamp() , date:util.getDatestamp(), username:data.username.toString(), message:data.message.toString()});
+        }
+        else{
+          SendServerMessage(socket, "You are not in a room called " + data.roomName);
+        }
+  });
 
   socket.on("requestClientList", function(){
       //requests and returs the client list as a string
-      socket.emit('message',{"message":util.getClientListasString(clients), username: "server"});
+      socket.emit('message',{message:util.getClientListasString(clients), username: "server"});
   });
+}
+var onRoomJoinLeave = function(socket){
+  //join the specified room
+  socket.on("joinRoom", function(data){
+    var exists = roomHandler.checkRoomExist(WorldRooms, data.roomName);
+    if(exists == true){
+      socket.broadcast.to(data.roomName).emit('message', {time:util.getTimestamp() , date:util.getDatestamp(), username:data.username.toString(), message:socket.username +" has joined the room."});
+      SendServerMessage(socket, "You have successfully joined the room " + data.roomName);
+      socket.currentRooms.push(data.roomName);
+    }
+    else{
+      SendServerMessage(socket, "There is no room of the name " + data.roomName);
+
+    }
+  });
+  socket.on("leaveRoom", function(data){
+    var exists = roomHandler.checkRoomExist(socket.currentRooms, data.roomName);
+    if(exists == true){
+      socket.leave(data.roomName);
+      var index = socket.currentRooms.indexOf(data.roomName);
+      if (index > -1) {
+        socket.currentRooms.splice(index, 1);
+        SendServerMessage(socket, "You have successfully left the room " + data.roomName);
+
+      }
+    }
+  });
+}
+
+
+var onRoomCreateDestroy = function(socket){
+  //handles new room creation
+  socket.on("createNewRoom", function(data){
+    var usedname = roomHandler.checkRoomExist(WorldRooms, data.roomName);
+    if(usedname == false){
+      socket.emit("message", {message:"You have created a new room called " + data.roomName, username:"server"});
+      var nRoom = roomHandler.createNewRoom(data.roomName,socket);
+      WorldRooms.push(nRoom);
+      socket.currentRooms.push(nRoom);
+    }
+    else{
+      socket.emit("message", {message:"The room name "+data.roomName+" is already in use", username:"server"});
+    }
+
+  });
+  //this is used to join a room, if the room does not exist it creates the room
+  socket.on("roomTryJoinCreate",function(data){
+    var exists = roomHandler.checkRoomExist(WorldRooms, data.roomName);
+    if(exists == true){
+      //check to see if the room has been joined by this user already
+      var hasJoined = roomHandler.checkRoomExist(socket.currentRooms, data.roomName);
+      if(hasJoined == false){
+        socket.broadcast.to(data.roomName).emit('message', {time:util.getTimestamp() , date:util.getDatestamp(), username:data.username.toString(), message:socket.username +" has joined the room."});
+        SendServerMessage(socket, "You have successfully joined the room " + data.roomName);
+        socket.currentRooms.push(data.roomName);
+      }
+      else{
+        SendServerMessage(socket, "You have already joined the room " + data.roomName);
+      }
+    }
+    else{
+      socket.emit("message", {message:"You have created a new room called " + data.roomName, username:"server"});
+      var nRoom = roomHandler.createNewRoom(data.roomName,socket);
+      WorldRooms.push(nRoom);
+      socket.currentRooms.push(nRoom);
+    }
+  });
+
+  socket.on("requestAllRooms", function(data){
+    console.log("get rooms");
+    socket.emit("message", {message:roomHandler.getRoomListAsString(WorldRooms), username:"server"})
+  });
+
+  socket.on("requestCurrentlyJoinedRooms", function(data){
+    socket.emit("message", {message:roomHandler.getRoomListAsString(socket.currentRooms), username:"server"})
+  });
+
+}
+
+var SendServerMessage = function(socket,msg){
+  socket.emit("message", {message:msg, username:"server"})
 }
 
 var onDisconnect = function(socket){
@@ -64,7 +158,8 @@ io.sockets.on("connection",function(socket){
   socket.emit("receiveUserMetadata", {username:socket.username, usercolor:socket.color});
   //adds the new socket to the client list
   clients.push(socket);
-
+  //the rooms that the client is connected to
+  socket.currentRooms = [];
   //adds everyone to the same public room
   socket.join("PublicRoom1");
   //on connect, tell the room you have connected
@@ -76,5 +171,7 @@ io.sockets.on("connection",function(socket){
 
 	onConnected(socket);
 	onDisconnect(socket);
+  onRoomJoinLeave(socket);
+  onRoomCreateDestroy(socket);
 
 });
