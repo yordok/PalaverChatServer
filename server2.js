@@ -35,8 +35,7 @@ var onConnected = function(socket){
         var exists = roomHandler.checkRoomExist(socket.currentRooms, data.roomName);
         if(exists == true){
           console.log("messageRoom was called");
-
-          socket.broadcast.to(data.roomName).emit('message', {time:util.getTimestamp() , date:util.getDatestamp(), username:data.username.toString(), message:data.message.toString()});
+          socket.broadcast.to(data.roomName).emit('message', {roomName:data.roomName ,time:util.getTimestamp() , date:util.getDatestamp(), username:data.username.toString(), message:data.message.toString()});
         }
         else{
           SendServerMessage(socket, "You are not in a room called " + data.roomName);
