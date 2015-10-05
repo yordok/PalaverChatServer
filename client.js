@@ -42,7 +42,6 @@ socket.on("connect", function(){
         socket.emit("roomTryJoinCreate",{roomName:name,username:userName});
       }
       if(Str.substr(0,9) == "/allrooms"){
-        console.log('ass');
         socket.emit("requestAllRooms");
       }
       if(Str.substr(0,8) == "/myrooms"){
@@ -50,7 +49,10 @@ socket.on("connect", function(){
       }
       if(Str.substr(0,8) == "/message"){
         var name = Str.substr(9).trim();
-        socket.emit("messageRoom", {roomName:name, message:"TEST TO THIS ROOM",username:userName});
+        var msge = "TESTROOM FUCK HOUSE TESTROOM FUCK HOUSE TESTROOM FUCK HOUSE FUCK HOUSE TESTROOM FFUCK HOUSE TESTROOM FFUCK HOUSE TESTROOM F "
+        var obj = {roomName:name, message:msge, username:userName.toString()};
+
+        socket.emit("messageRoom", obj);
       }
       if(Str.substr(0,6) == "/leave"){
         var name = Str.substr(7).trim();

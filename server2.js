@@ -28,14 +28,16 @@ var onConnected = function(socket){
   //messageAll listener
   socket.on("messageAll",function(data){
         //sends the message to everone in the room Public Room 1
-    		socket.broadcast.to('PublicRoom1').emit('message', {time:util.getTimestamp() , date:util.getDatestamp(), username:data.username.toString(), message:data.message.toString()});
+    		socket.broadcast.to('PublicRoom1').emit('message', {time:util.getTimestamp() , date:util.getDatestamp(), username:socket.username.toString(), message:data.message.toString()});
   });
   //message a specific room listener
   socket.on("messageRoom",function(data){
+        console.log(socket.username);
         var exists = roomHandler.checkRoomExist(socket.currentRooms, data.roomName);
         if(exists == true){
-          console.log("messageRoom was called");
-          socket.broadcast.to(data.roomName).emit('message', {roomName:data.roomName ,time:util.getTimestamp() , date:util.getDatestamp(), username:data.username.toString(), message:data.message.toString()});
+          var room = roomHandler.retrieveRoomObject(WorldRooms, data.roomName);
+          console.log(room.name);
+          socket.broadcast.to(room.name.toString()).emit('message', {roomName:data.roomName ,time:util.getTimestamp() , date:util.getDatestamp(), username:socket.username.toString(), message:data.message.toString()});
         }
         else{
           SendServerMessage(socket, "You are not in a room called " + data.roomName);
@@ -127,7 +129,7 @@ var onRoomCreateDestroy = function(socket){
 }
 
 var SendServerMessage = function(socket,msg){
-  socket.emit("message", {message:msg, username:"server"})
+  socket.emit("message", {roomName:"SERVER",message:msg, username:"server"})
 }
 
 var onDisconnect = function(socket){
