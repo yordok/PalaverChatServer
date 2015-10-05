@@ -52,6 +52,11 @@ socket.on("connect", function(){
         var name = Str.substr(9).trim();
         socket.emit("messageRoom", {roomName:name, message:"TEST TO THIS ROOM",username:userName});
       }
+      if(Str.substr(0,6) == "/leave"){
+        var name = Str.substr(7).trim();
+        socket.emit("leaveRoom", {roomName:name});
+      }
+
 
   });
 

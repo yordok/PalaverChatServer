@@ -66,7 +66,7 @@ var onRoomJoinLeave = function(socket){
     var exists = roomHandler.checkRoomExist(socket.currentRooms, data.roomName);
     if(exists == true){
       socket.leave(data.roomName);
-      var index = socket.currentRooms.indexOf(data.roomName);
+      var index = socket.currentRooms.indexOf(roomHandler.retrieveRoomObject(socket.currentRooms, data.roomName));
       if (index > -1) {
         socket.currentRooms.splice(index, 1);
         SendServerMessage(socket, "You have successfully left the room " + data.roomName);
