@@ -92,6 +92,7 @@ var onRoomCreateDestroy = function(socket){
     }
 
   });
+  //create this
   //this is used to join a room, if the room does not exist it creates the room
   socket.on("roomTryJoinCreate",function(data){
     var exists = roomHandler.checkRoomExist(WorldRooms, data.roomName);
@@ -101,7 +102,7 @@ var onRoomCreateDestroy = function(socket){
       if(hasJoined == false){
         socket.broadcast.to(data.roomName).emit('message', {time:util.getTimestamp() , date:util.getDatestamp(), username:data.username.toString(), message:socket.username +" has joined the room."});
         SendServerMessage(socket, "You have successfully joined the room " + data.roomName);
-        socket.currentRooms.push(data.roomName);
+        socket.currentRooms.push(roomHandler.retrieveRoomObject(WorldRooms, data.roomName));
       }
       else{
         SendServerMessage(socket, "You have already joined the room " + data.roomName);
@@ -160,6 +161,7 @@ io.sockets.on("connection",function(socket){
   clients.push(socket);
   //the rooms that the client is connected to
   socket.currentRooms = [];
+
   //adds everyone to the same public room
   socket.join("PublicRoom1");
   //on connect, tell the room you have connected

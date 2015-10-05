@@ -7,6 +7,14 @@ var createNewRoom = function(roomName, socket){
   return newRoomOBJ;
 
 }
+//returns the full object of the specified name
+var retrieveRoomObject = function(RoomList, RoomName){
+  for(var j = 0; j < RoomList.length; j++){
+    if(RoomList[j].name == RoomName){
+      return RoomList[j];
+    }
+  }
+}
 //returns true if the inputed name exists
 var checkRoomExist = function(RoomList, RoomName){
   for(var o = 0; o < RoomList.length; o++){
@@ -25,6 +33,7 @@ var getRoomListAsString = function(RoomList){
   return stringList;
 }
 
+module.exports.retrieveRoomObject = retrieveRoomObject;
 module.exports.checkRoomExist = checkRoomExist;
 module.exports.createNewRoom = createNewRoom;
 module.exports.getRoomListAsString = getRoomListAsString;

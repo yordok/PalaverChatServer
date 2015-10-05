@@ -37,19 +37,19 @@ socket.on("connect", function(){
     console.log(Str);
     //console.log(data.toString().substr(0,) + "|");
       if(Str.substr(0,8) == "/newroom"){
-        var name = Str.substr(9);
-        socket.emit("roomTryJoinCreate",{roomName:name});
+        var name = Str.substr(9).trim();
+
+        socket.emit("roomTryJoinCreate",{roomName:name,username:userName});
       }
       if(Str.substr(0,9) == "/allrooms"){
         console.log('ass');
         socket.emit("requestAllRooms");
       }
       if(Str.substr(0,8) == "/myrooms"){
-        socket.emit("requestAllRooms");
+        socket.emit("requestCurrentlyJoinedRooms");
       }
       if(Str.substr(0,8) == "/message"){
-        var name = Str.substr(9);
-        console.log("asd")
+        var name = Str.substr(9).trim();
         socket.emit("messageRoom", {roomName:name, message:"TEST TO THIS ROOM",username:userName});
       }
 
