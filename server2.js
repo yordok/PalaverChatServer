@@ -32,7 +32,7 @@ var onConnected = function(socket){
         console.log(data.message);
         var exists = roomHandler.checkRoomExist(socket.currentRooms, data.roomName);
         if(exists == true){
-          socket.broadcast.to(data.roomName.emit('message', {roomName:data.roomName, username: socket.username, message:data.message}));
+          socket.broadcast.to(data.roomName).emit('message', {roomName:data.roomName, username: socket.username, message:data.message});
         }
         else{
           SendServerMessage(socket, "You are not in a room called " + data.roomName);
