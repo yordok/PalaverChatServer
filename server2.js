@@ -33,6 +33,7 @@ var onConnected = function(socket){
   //message a specific room listener
   socket.on("messageRoom",function(data){
         console.log(socket.username);
+        console.log(socket.message);
         var exists = roomHandler.checkRoomExist(socket.currentRooms, data.roomName);
         if(exists == true){
           var room = roomHandler.retrieveRoomObject(WorldRooms, data.roomName);
