@@ -32,7 +32,7 @@ var onConnected = function(socket){
         console.log(data.message);
         var exists = roomHandler.checkRoomExist(socket.currentRooms, data.roomName);
         if(exists == true){
-          socket.broadcast.to(data.roomName.emit('message', {roomName:data.roomName ,username:socket.username, message:data.message});
+          socket.broadcast.to(data.roomName.emit('message', {roomName:data.roomName, username: socket.username, message:data.message});
         }
         else{
           SendServerMessage(socket, "You are not in a room called " + data.roomName);
@@ -96,7 +96,7 @@ var onRoomCreateDestroy = function(socket){
       //check to see if the room has been joined by this user already
       var hasJoined = roomHandler.checkRoomExist(socket.currentRooms, data.roomName);
       if(hasJoined == false){
-        socket.broadcast.to(data.roomName).emit('message', {roomName:data.roomName, username:data.username, message:socket.username +" has joined the room."});
+        socket.broadcast.to(data.roomName).emit('message', {roomName:data.roomName, username:data.username.toString(), message:socket.username +" has joined the room."});
         SendServerMessage(socket, "You have successfully joined the room " + data.roomName);
         socket.currentRooms.push(roomHandler.retrieveRoomObject(WorldRooms, data.roomName));
       }
