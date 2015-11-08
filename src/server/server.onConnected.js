@@ -1,7 +1,7 @@
 var util = require('../utilities/utils.js');
 var roomHandler = require('../utilities/roomHandler.js');
 //onConnected event handler body
-var onConnected = function(socket){
+var onConnected = function(socket, clients){
   socket.on("join", function(data) {
 	  socket.emit("message",{username: "SERVER", message:"You have connected"});
   });

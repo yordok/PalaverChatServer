@@ -65,9 +65,9 @@ io.sockets.on("connection",function(socket){
   //Server logs that a new connection has been made
   console.log("connected to the server");
   //callback function from the server to let the client know that they have connected
-	onConnected.onConnected(socket);
-	onDisconnected.onDisconnected(socket);
-  onRoomJoinLeave.onRoomJoinLeave(socket);
-  onRoomCreateDestroy.onRoomCreateDestroy(socket);
+	onConnected.onConnected(socket, clients);
+	onDisconnected.onDisconnected(socket, clients);
+  onRoomJoinLeave.onRoomJoinLeave(socket, WorldRooms);
+  onRoomCreateDestroy.onRoomCreateDestroy(socket, WorldRooms);
 
 });

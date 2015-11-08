@@ -1,7 +1,7 @@
 var io = require('socket.io-client');
-var socket = io.connect("http://palaver-server.herokuapp.com/");//used to connect to the heroku server
+//var socket = io.connect("http://palaver-server.herokuapp.com/");//used to connect to the heroku server
 var stdin = process.stdin;
-//var socket = io.connect("http://localhost:5000");//used to connect to the localhost for testing
+var socket = io.connect("http://localhost:5000");//used to connect to the localhost for testing
 
 console.log("trying to connect")
 var userName = ""
@@ -34,7 +34,6 @@ socket.on("connect", function(){
   });
   stdin.on('data', function (data) {
     var Str = data.toString().substr(0, data.length -1);
-    console.log(Str);
     //console.log(data.toString().substr(0,) + "|");
       if(Str.substr(0,8) == "/newroom"){
         var name = Str.substr(9).trim();
@@ -49,7 +48,7 @@ socket.on("connect", function(){
       }
       if(Str.substr(0,8) == "/message"){
         var name = Str.substr(9).trim();
-        var msge = "TESTROOM FUCK HOUSE TESTROOM FUCK HOUSE TESTROOM FUCK HOUSE FUCK HOUSE TESTROOM FFUCK HOUSE TESTROOM FFUCK HOUSE TESTROOM F "
+        var msge = "TEST ROOM";
         var obj = {roomName:name, message:msge, username:userName.toString()};
 
         socket.emit("messageRoom", obj);

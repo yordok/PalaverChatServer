@@ -2,19 +2,18 @@
 var util = require('../utilities/utils.js');
 var roomHandler = require('../utilities/roomHandler.js');
 
-var onRoomJoinLeave = function(socket){
+var onRoomJoinLeave = function(socket, WorldRooms){
   //join the specified room
   socket.on("joinRoom", function(data){
     var exists = roomHandler.checkRoomExist(WorldRooms, data.roomName);
     if(exists == true){
       socket.join(data.roomName);
-      socket.broadcast.to(data.roomName).emit('message', {username:data.username.toString(), message:socket.username +" has joined the room."});
+      socket.broadcast.to(data.roomName).emit('message', {username:socket.username, message:socket.username +" has joined the room."});
       SendServerMessage(socket, "You have successfully joined the room " + data.roomName);
       socket.currentRooms.push(data.roomName);
     }
     else{
       SendServerMessage(socket, "There is no room of the name " + data.roomName);
-
     }
   });
   socket.on("leaveRoom", function(data){

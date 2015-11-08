@@ -2,7 +2,7 @@
 var util = require('../utilities/utils.js');
 var roomHandler = require('../utilities/roomHandler.js');
 
-var onRoomCreateDestroy = function(socket){
+var onRoomCreateDestroy = function(socket, WorldRooms){
   //handles new room creation
   socket.on("createNewRoom", function(data){
     var usedname = roomHandler.checkRoomExist(WorldRooms, data.roomName);
