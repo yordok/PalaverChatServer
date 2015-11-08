@@ -18,9 +18,10 @@ var roomHandler = require('../utilities/roomHandler.js');
 //including the proper filed and setting a port
 //also creating the server object
 var port = process.env.PORT;
-
-//var dbURL = "mongodb://localhost/";
-var dbURL = process.env.MONGOLAB_URI;
+//for local testing
+var dbURL = "mongodb://localhost/";
+//for website testing
+//var dbURL = process.env.MONGOLAB_URI;
 
 
 //server variables
