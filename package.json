@@ -19,7 +19,8 @@
     "body-parser": "~1.14.1",
     "cookie-parser": "~1.4.0",
     "express-session": "~1.12.1",
-    "jade": "~1.11.0"
+    "jade": "~1.11.0",
+    "mongodb": "~2.0.48"
   },
   "engines": {
     "node": "0.10.x"
