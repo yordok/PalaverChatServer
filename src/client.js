@@ -1,7 +1,7 @@
 var io = require('socket.io-client');
-//var socket = io.connect("https://palaver-server.herokuapp.com/");//used to connect to the heroku server
+var socket = io.connect("http://palaver-server.herokuapp.com/");//used to connect to the heroku server
 var stdin = process.stdin;
-var socket = io.connect("http://localhost:5000");//used to connect to the localhost for testing
+//var socket = io.connect("http://localhost:5000");//used to connect to the localhost for testing
 
 console.log("trying to connect")
 var userName = ""

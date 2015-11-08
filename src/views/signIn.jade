@@ -1,0 +1,18 @@
+html(lang="en")
+  head
+    meta(charset="utf-8")
+    title Palaver Signin
+  body
+    h1 Palaver Sign In
+    h2
+      a(href="/signup") or sign up...
+    form(name="SignIn", action="/signin", method="post")
+      div
+        label Username  
+        input(type="text" name="username" placeholder="Username")
+      div
+        label Password  
+        input(type="password" name="password" placeholder="Password")
+      div
+        input(type="submit" name="submit" value="Submit")
+    
