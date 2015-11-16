@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "test": "jshint ./server2.js ./client.js",
-    "start": "node ./server2.js"
+    "start": "node ./src/server/server.main.js"
   },
   "author": "Jordan Karlsruher",
   "license": "BSD-2-Clause",
@@ -20,8 +20,11 @@
     "cookie-parser": "~1.4.0",
     "express-session": "~1.12.1",
     "jade": "~1.11.0",
-    "mongodb": "~2.0.48",
-    "regexp-clone": "0.0.1"
+    "connect-redis": "~3.0.1",
+    "underscore": "~1.8.3",
+    "csurf": "~1.8.3",
+    "helmet": "~0.14.0",
+    "compression": "~1.6.0"
   },
   "engines": {
     "node": "0.10.x"

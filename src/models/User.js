@@ -41,9 +41,11 @@ UserSchema.methods.validatePassword = function(password, callback) {
 	var pass = this.password;
 
 	crypto.pbkdf2(password, this.salt, iterations, keyLength, function(err, hash) {
-		if(hash.toString('hex') !== pass) {
+
+    if(hash.toString('hex') !== pass) {
 			return callback(false);
 		}
+
 		return callback(true);
 	});
 };
@@ -61,7 +63,7 @@ UserSchema.statics.generateHash = function(password, callback) {
 	var salt = crypto.randomBytes(saltLength);
 
 	crypto.pbkdf2(password, salt, iterations, keyLength, function(err, hash){
-		return callback(salt, hash.toString('hex'));
+      		return callback(salt, hash.toString('hex'));
 	});
 }
 
@@ -70,26 +72,23 @@ UserSchema.statics.authenticate = function(username, password, callback) {
 
 		if(err)
 		{
+      console.log(err);
 			return callback(err);
 		}
-
-        if(!doc) {
-            return callback();
+    if(!doc) {
+        return callback();
+    }
+    doc.validatePassword(password, function(result) {
+        if(result === true) {
+            return callback(null, doc);
         }
 
-        doc.validatePassword(password, function(result) {
-            if(result === true) {
-                return callback(null, doc);
-            }
-
-            return callback();
-        });
-
+        return callback();
+    });
 	});
 };
 
 userModel = mongoose.model('User', UserSchema);
-
 
 module.exports.userModel = userModel;
 module.exports.userSchema = UserSchema;
