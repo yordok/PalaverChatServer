@@ -2,17 +2,20 @@ html(lang="en")
   head
     meta(charset="utf-8")
     title Palaver Signin
-  body
+    link(rel="stylesheet", type="text/css", href="/assets/betterStyle.css")
+    link(href="https://fonts.googleapis.com/css?family=Open+Sans", rel="stylesheet", type="text/css")
+  body.container
     h1 Palaver Sign In
     h2
       a(href="/signup") or sign up...
     form(name="signIn", action="/signin", method="post")
       div
-        label Username  
+          
         input(type="text" name="username" placeholder="Username")
       div
-        label Password  
+       
         input(type="password" name="password" placeholder="Password")
       div
-        input(type="submit" name="submit" value="Submit")
+      
+        input#submitButton(type="submit" name="submit" value="Submit")
     

@@ -3,8 +3,10 @@ html(lang="en")
     meta(charset="utf-8")
     script(src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js")
     script(src='assets/profileScript.js')
+    link(rel="stylesheet", type="text/css", href="/assets/betterStyle.css")
+    link(href="https://fonts.googleapis.com/css?family=Open+Sans", rel="stylesheet", type="text/css")
     title Profile Settings
-  body
+  body.container2
     h1 Profile Settings
       if !settings
         h2.ProfileTitle There seems to be nothing here.
@@ -15,35 +17,31 @@ html(lang="en")
             if settings.wantsCustomName == true
               h2.ProfileCustomName You are currently using the custom name #{settings.CustomName}.
               p To turn off this setting, uncheck the checkbox underneath.
-              label(for="wantsCustomName") Do you want a custom name?
               input#NameCheckbox(type="checkbox" name="wantsCustomName" onclick="onChangeCheckbox()" checked)
               label(for="CustomName") Custom name:
               input#NameText(type="text" name="CustomName" value="#{settings.CustomName}")
             else
               h2.ProfileCustomName You are currently not using a custom name and allowing our servers to give you an anonymous name everytime you log in.
               p To turn this setting on, check the checkbox.
-              label(for="wantsCustomName") Do you want a custom name?
               input#NameCheckbox(type="checkbox" name="wantsCustomName" onclick="onChangeCheckbox()")
-              label(for="CustomName") Custom name:
+              label(for="CustomName") Do you want a custom name?
               input#NameText(type="text" name="CustomName" placeholder="#{settings.CustomName}" disabled="disabled")
               
-          section#CustomName  
+          section#CustomColor 
             if settings.wantsCustomColor == true
               h2.ProfileCustomColor You are currently using the custom color #{settings.CustomColor}.
               p To turn off this setting, uncheck the checkbox underneath.
-              label(for="wantsCustomColor") Do you want a custom color?
               input#ColorCheckbox(type="checkbox" name="wantsCustomColor" onclick="onChangeCheckbox2()" checked)
-              label(for="CustomColor") Do you want a custom color?
+              label(for="CustomColor") Custom color:
               input#ColorText(type="text" name="CustomColor" value="#{settings.CustomColor}")
             else
               h2.ProfileCustomColor You are currently not using a custom color and allowing our servers to give you a random color everytime you log in.
               p To turn this setting on, check the checkbox.
-              label(for="wantsCustomColor") Do you want a custom color?
               input#ColorCheckbox(type="checkbox" name="wantsCustomColor" onclick="onChangeCheckbox2()")
-              label(for="CustomName") Custom color:
+              label(for="CustomName") Do you want a custom color?
               input#ColorText(type="text" name="CustomColor" placeholder="#{settings.CustomColor}" disabled="disabled")
           input(type="hidden" name="username" value="#{settings.username}")
           section#formSubmit
-            input(type="submit" name="submit" value="Submit")
+            input#submitButton(type="submit" name="submit" value="Submit")
 
     

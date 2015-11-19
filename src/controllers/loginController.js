@@ -76,6 +76,7 @@ var profileForm = function(req, res){
               }
               else{
                 res.render( __dirname + './../views/profilePage.jade', {settings: newData});
+                //res.redirect('/success');
               }
           });
       }
