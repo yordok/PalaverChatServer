@@ -8,8 +8,10 @@ var router = function(app, token){
     app.get('/signup',token , loginCont.controllers.creationPage);
     app.get('/success',token , loginCont.controllers.successPage);
     app.get('/error',token , loginCont.controllers.errorPage);
+    app.get('/profile', token, loginCont.controllers.profilePage);
     //post
     app.post('/signin', loginCont.controllers.signIn);
     app.post('/signup', loginCont.controllers.signUp);
+    app.post('/profile', loginCont.controllers.profileForm);
 };
 module.exports.route = router;

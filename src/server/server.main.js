@@ -1,6 +1,7 @@
 //app deppendencies
 var path = require('path');
-var app = require('express')();
+var express = require('express');
+var app = express();
 var server = require('http').Server(app);
 var io = require('socket.io')(server);
 var compression = require('compression');
@@ -26,8 +27,8 @@ var clients = [];
 var WorldRooms = [];
 var publicRooms = 1;
 
-//var dbURL = "mongodb://localhost/" ||
-var dbURL = process.env.MONGOLAB_URI; //process.env.MONGOLAB_URI ||
+var dbURL = "mongodb://localhost/";
+//var dbURL = process.env.MONGOLAB_URI; //process.env.MONGOLAB_URI ||
 
 var db = mongoose.connect(dbURL, function(err){
     if(err){
@@ -49,7 +50,7 @@ if(process.env.REDISCLOUD_URL){
 }
 
 var port = process.env.PORT || process.env.NODE_PORT || 3000;
-
+app.use('/assets', express.static(path.resolve(__dirname+'./../public/')));
 app.use(compression());
 app.use(bodyParser.urlencoded({
   extended:true
