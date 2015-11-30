@@ -77,13 +77,6 @@ app.use(cookieParser());
 
 var csrfProtection = csrf({cookie:true});
 
-/*
-app.use(function(err, req, res, next){
-    if(err.code !== "EBADCSRFTOKEN") return next(err)
-
-    return;
-});
-*/
 router.route(app, csrfProtection);
 
 server.listen(port);

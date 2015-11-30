@@ -1,7 +1,7 @@
 var io = require('socket.io-client');
-var socket = io.connect("wss://palaver-server.herokuapp.com/");//used to connect to the heroku server
+//var socket = io.connect("wss://palaver-server.herokuapp.com/");//used to connect to the heroku server
 var stdin = process.stdin;
-//var socket = io.connect("ws://localhost:5000");//used to connect to the localhost for testing
+var socket = io.connect("ws://localhost:5000");//used to connect to the localhost for testing
 
 console.log("trying to connect")
 var userName = ""
@@ -56,6 +56,9 @@ socket.on("connect", function(){
       if(Str.substr(0,6) == "/leave"){
         var name = Str.substr(7).trim();
         socket.emit("leaveRoom", {roomName:name});
+      }
+      if(Str.substr(0,6) == "/login"){
+        socket.emit("login", {username:test120, password:jordan});
       }
       if(Str.substr(0,5) == "/join"){
         var name = Str.substr(6).trim();
