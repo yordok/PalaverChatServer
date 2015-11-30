@@ -29,8 +29,8 @@ var clients = [];
 var WorldRooms = [];
 var publicRooms = 1;
 
-var dbURL = "mongodb://localhost/";
-//var dbURL = process.env.MONGOLAB_URI; //process.env.MONGOLAB_URI ||
+//var dbURL = "mongodb://localhost/";
+var dbURL = process.env.MONGOLAB_URI; //process.env.MONGOLAB_URI ||
 
 var db = mongoose.connect(dbURL, function(err){
     if(err){
