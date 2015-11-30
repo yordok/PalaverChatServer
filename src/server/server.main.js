@@ -18,6 +18,8 @@ var onConnected = require('./server.onConnected.js');
 var onDisconnected = require('./server.onDisconnected.js');
 var onRoomJoinLeave = require('./server.onRoomJoinLeave.js');
 var onRoomCreateDestroy = require('./server.onRoomCreateDestroy.js');
+var onSocketLogin = require('./server.onSocketLogin.js');
+
 var router = require('../router.js');
 var util = require('../utilities/utils.js');
 var roomHandler = require('../utilities/roomHandler.js');
@@ -107,5 +109,6 @@ io.sockets.on("connection",function(socket){
 	onDisconnected.onDisconnected(socket, clients);
   onRoomJoinLeave.onRoomJoinLeave(socket, WorldRooms);
   onRoomCreateDestroy.onRoomCreateDestroy(socket, WorldRooms);
+  onSocketLogin.onSocketLogin(socket);
 
 });
