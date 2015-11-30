@@ -6,7 +6,8 @@ var userModel;
 var iterations = 10000;
 var saltLength = 64;
 var keyLength = 64;
-
+//if referencing the varialbles in the schema,
+//check the toAPI function for the proper spelling
 var UserSchema = new mongoose.Schema({
     username: {
       type: String,

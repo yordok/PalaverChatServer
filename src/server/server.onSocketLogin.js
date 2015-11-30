@@ -6,19 +6,19 @@ var onSocketLogin = function(socket){
 
   socket.on("login", function(data){
     userModel.userModel.authenticate(data.username, data.password, function(error, account){
-      if(error || !account){
-        socket.emit("LoginError");
+      if(error){
+        socket.emit("LoginError", {message:"Wrong username and password combo"});
+      }
+      else if(!account){
+        socket.emit("LoginError", {message:"User does not exist"});
       }
       else{
         var AccountInfo = account.toAPI();
         socket.emit("LoginSuccessful", AccountInfo);
-        socket.emit("message", {message:AccountInfo.customName});
+        console.log(AccountInfo);
       }
-      //res.json({redirect: "/profile", settings: req.session.account});
     });
-
   });
-
 };
 
 

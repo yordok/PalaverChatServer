@@ -1,7 +1,7 @@
 var io = require('socket.io-client');
 //var socket = io.connect("wss://palaver-server.herokuapp.com/");//used to connect to the heroku server
 var stdin = process.stdin;
-var socket = io.connect("ws://localhost:5000");//used to connect to the localhost for testing
+var socket = io.connect("http://localhost:3000");//used to connect to the localhost for testing
 
 console.log("trying to connect")
 var userName = ""
@@ -25,6 +25,13 @@ socket.on("connect", function(){
 	//when a message is recieved
 	socket.on("message",function(data){
 	  console.log(data.username + ": " + data.message);
+	});
+  socket.on("LoginError",function(data){
+	  console.log("An Error Occured while logging in.");
+	});
+  socket.on("LoginSuccessful",function(data){
+	  console.log("Login Successful");
+    console.log(data);
 	});
 
   socket.on("receiveUserMetadata", function(data){
@@ -58,7 +65,7 @@ socket.on("connect", function(){
         socket.emit("leaveRoom", {roomName:name});
       }
       if(Str.substr(0,6) == "/login"){
-        socket.emit("login", {username:test120, password:jordan});
+        socket.emit("login", {username:"test120", password:"jordan"});
       }
       if(Str.substr(0,5) == "/join"){
         var name = Str.substr(6).trim();

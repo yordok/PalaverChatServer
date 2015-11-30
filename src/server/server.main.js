@@ -29,8 +29,8 @@ var clients = [];
 var WorldRooms = [];
 var publicRooms = 1;
 
-//var dbURL = "mongodb://localhost/";
-var dbURL = process.env.MONGOLAB_URI; //process.env.MONGOLAB_URI ||
+var dbURL = "mongodb://localhost/";
+//var dbURL = process.env.MONGOLAB_URI; //process.env.MONGOLAB_URI ||
 
 var db = mongoose.connect(dbURL, function(err){
     if(err){
@@ -52,6 +52,7 @@ if(process.env.REDISCLOUD_URL){
 }
 
 var port = process.env.PORT || process.env.NODE_PORT || 3000;
+//var port = 3000;
 app.use('/assets', express.static(path.resolve(__dirname+'./../public/')));
 app.use(compression());
 app.use(bodyParser.urlencoded({
@@ -83,7 +84,7 @@ server.listen(port);
 console.log("route");
 
 io.sockets.on("connection",function(socket){
-//this method attached the handler onConnected to a new socket when it has connected
+  //this method attached the handler onConnected to a new socket when it has connected
   //generates a random username for the new socket
   socket.username = util.getRandomName();
   //generates a random color to associate with this user
