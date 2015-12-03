@@ -41,10 +41,10 @@ var onSocketLogin = function(socket){
           user.save(function(error, data){
               if(error){
                 console.log("error with saving");
-                socket.emit("changePreferencesError");
+                socket.emit("changePreferencesError", {message: error});
               }
               else{
-                socket.emit("changePreferencesSuccess");
+                socket.emit("changePreferencesSuccess", user);
                 //res.redirect('/success');
               }
           });
@@ -56,7 +56,7 @@ var onSocketLogin = function(socket){
   socket.on("createAccount",function(data){
     userModel.userModel.generateHash(data.pass1, function (salt, hash){
       var userData = {
-        username:data.username,
+        username: data.username,
         salt: new Buffer(salt),
         password: hash
       };
