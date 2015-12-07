@@ -15,7 +15,14 @@ var onSocketLogin = function(socket){
       else{
         var AccountInfo = account.toAPI();
         socket.UserID = data.username;
+        if(AccountInfo.wantsCustomName){
+          socket.username = AccountInfo.customName;
+        }
+        else{
+          socket.username = util.getRandomName();
+        }
         socket.emit("LoginSuccessful", AccountInfo);
+        socket.emit("receiveUserMetadata", {username: util.getRandomName(), usercolor: util.getRandomColor()})
         console.log(AccountInfo);
       }
     });
@@ -34,6 +41,7 @@ var onSocketLogin = function(socket){
 
       }
       else{
+          console.log(data);
           user.wantsCustomName = data.wantsCustomName;
           user.wantsCustomColor = data.wantsCustomColor;
           user.customName = data.CustomName;
@@ -42,9 +50,11 @@ var onSocketLogin = function(socket){
               if(error){
                 console.log("error with saving");
                 socket.emit("changePreferencesError", {message: error});
+                console.log(error);
               }
               else{
                 socket.emit("changePreferencesSuccess", user);
+                socket.emit("receiveUserMetadata", {username: util.getRandomName(), usercolor: util.getRandomColor()});
                 //res.redirect('/success');
               }
           });
@@ -82,6 +92,9 @@ var onSocketLogin = function(socket){
       });
 
     });
+  });
+  socket.on("requestUserMetaData",function(data){
+    socket.emit("receiveUserMetadata", {username: util.getRandomName(), usercolor: util.getRandomColor()});
   });
 
 };

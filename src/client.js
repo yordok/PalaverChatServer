@@ -26,6 +26,9 @@ socket.on("connect", function(){
 	socket.on("message",function(data){
 	  console.log(data.username + ": " + data.message);
 	});
+  socket.on("onInvite", function(data) {
+    console.log("invited to " + data.roomname);
+  });
   socket.on("LoginError",function(data){
 	  console.log("An Error Occured while logging in.");
 	});
@@ -70,6 +73,11 @@ socket.on("connect", function(){
       if(Str.substr(0,5) == "/join"){
         var name = Str.substr(6).trim();
         socket.emit("joinRoom", {roomName:name});
+      }
+
+      if(Str.substr(0,9) == "/fillRoom"){
+        var name = Str.substr(6).trim();
+        socket.emit("requestInviteOthers", {roomname:"TESTROOM"});
       }
 
 

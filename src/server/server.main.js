@@ -19,6 +19,7 @@ var onDisconnected = require('./server.onDisconnected.js');
 var onRoomJoinLeave = require('./server.onRoomJoinLeave.js');
 var onRoomCreateDestroy = require('./server.onRoomCreateDestroy.js');
 var onSocketLogin = require('./server.onSocketLogin.js');
+var onRoomInvite = require('./server.onRoomInvite.js');
 
 var router = require('../router.js');
 var util = require('../utilities/utils.js');
@@ -85,10 +86,6 @@ console.log("route");
 
 io.sockets.on("connection",function(socket){
   //this method attached the handler onConnected to a new socket when it has connected
-  //generates a random username for the new socket
-  socket.username = util.getRandomName();
-  //generates a random color to associate with this user
-  socket.color = util.getRandomColor();
   //send the color and username created by the server back to the user for storage
   socket.emit("receiveUserMetadata", {username:socket.username, usercolor:socket.color});
   //adds the new socket to the client list
@@ -102,7 +99,23 @@ io.sockets.on("connection",function(socket){
 	onConnected.onConnected(socket, clients);
 	onDisconnected.onDisconnected(socket, clients);
   onRoomJoinLeave.onRoomJoinLeave(socket, WorldRooms);
-  onRoomCreateDestroy.onRoomCreateDestroy(socket, WorldRooms);
+  onRoomCreateDestroy.onRoomCreateDestroy(socket, WorldRooms, io.sockets);
   onSocketLogin.onSocketLogin(socket);
+  onRoomInvite.onRoomInvite(socket, WorldRooms, clients);
 
 });
+
+setInterval(function(){deleteUnusedSockets();}, 1000);
+
+//this is used to delete sockets that are are no longer connected
+var deleteUnusedSockets = function(){
+  for(var i = 0; i < clients.length; i++){
+    if(clients[i] == undefined || clients[i] == "undefined"){
+      var index = clients.indexOf(i);
+      if (index > -1) {
+        clients.splice(index, 1);
+        console.log("Removed unused client");
+      }
+    }
+  }
+}

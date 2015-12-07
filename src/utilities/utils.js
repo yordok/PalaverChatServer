@@ -53,6 +53,10 @@ var getRandomName = function(){
 	return name;
 }
 
+var SendServerMessage = function(socket,msg){
+  socket.emit("message", {roomName:"SERVER",message:msg, username:"Server Message", color:"EE0000"})
+}
+
 var getRandomColor = function(){
 	var color = "";
 	for(var i =0; i < 6; i++){
@@ -388,3 +392,4 @@ module.exports.getTimestamp = getTimestamp;
 module.exports.getDatestamp = getDatestamp;
 module.exports.getRandomColor = getRandomColor;
 module.exports.getRandomName = getRandomName;
+module.exports.sendServerMessage = SendServerMessage;
