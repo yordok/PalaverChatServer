@@ -38,8 +38,8 @@ socket.on("connect", function(){
 	});
 
   socket.on("receiveUserMetadata", function(data){
-    userName = data.username.toString();
-    userColor = data.usercolor.toString();
+    userName = data.username;
+    userColor = data.usercolor;
     console.log(data.username + " " + data.usercolor);
   });
   stdin.on('data', function (data) {
@@ -48,7 +48,7 @@ socket.on("connect", function(){
       if(Str.substr(0,8) == "/newroom"){
         var name = Str.substr(9).trim();
 
-        socket.emit("roomTryJoinCreate",{roomName:name,username:userName});
+        socket.emit("roomTryJoinCreate",{roomName:name,username:userName, usercolor:userColor});
       }
       if(Str.substr(0,9) == "/allrooms"){
         socket.emit("requestAllRooms");
@@ -65,7 +65,7 @@ socket.on("connect", function(){
       }
       if(Str.substr(0,6) == "/leave"){
         var name = Str.substr(7).trim();
-        socket.emit("leaveRoom", {roomName:name});
+        socket.emit("leaveRoom", {roomName:name, username:userName});
       }
       if(Str.substr(0,6) == "/login"){
         socket.emit("login", {username:"test120", password:"jordan"});
@@ -76,8 +76,12 @@ socket.on("connect", function(){
       }
 
       if(Str.substr(0,9) == "/fillRoom"){
-        var name = Str.substr(6).trim();
+        var name = Str.substr(9).trim();
         socket.emit("requestInviteOthers", {roomname:"TESTROOM"});
+      }
+      if(Str.substr(0,7) == "/inroom"){
+        var name = Str.substr(8).trim();
+        socket.emit("requestClientsInRoom", {roomname:name});
       }
 
 

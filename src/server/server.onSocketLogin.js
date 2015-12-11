@@ -2,9 +2,11 @@ var util = require('../utilities/utils.js');
 var roomHandler = require('../utilities/roomHandler.js');
 var userModel = require("../models/User.js");
 
-var onSocketLogin = function(socket){
+var onSocketLogin = function(socket, clients){
   //login
   socket.on("login", function(data){
+    socket.username = " ";
+    console.log("login username"+ socket.username);
     userModel.userModel.authenticate(data.username, data.password, function(error, account){
       if(error){
         socket.emit("LoginError", {message:"Wrong username and password combo"});
@@ -16,13 +18,14 @@ var onSocketLogin = function(socket){
         var AccountInfo = account.toAPI();
         socket.UserID = data.username;
         if(AccountInfo.wantsCustomName){
-          socket.username = AccountInfo.customName;
+          socket.username = AccountInfo.CustomName;
         }
         else{
           socket.username = util.getRandomName();
         }
         socket.emit("LoginSuccessful", AccountInfo);
-        socket.emit("receiveUserMetadata", {username: util.getRandomName(), usercolor: util.getRandomColor()})
+        socket.emit("receiveUserMetadata", {username: util.getRandomName(), usercolor: util.getRandomColor()});
+        util.updateSocketObject(socket, clients);
         console.log(AccountInfo);
       }
     });
@@ -55,7 +58,14 @@ var onSocketLogin = function(socket){
               else{
                 socket.emit("changePreferencesSuccess", user);
                 socket.emit("receiveUserMetadata", {username: util.getRandomName(), usercolor: util.getRandomColor()});
-                //res.redirect('/success');
+                if(user.wantsCustomColor){
+                  socket.usercolor = user.CustomColor;
+                }
+                else
+                if(user.wantsCustomName){
+                  socket.username = socket.CustomName;
+                }
+                util.updateSocketObject(socket, clients);
               }
           });
       }

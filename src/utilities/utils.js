@@ -57,41 +57,28 @@ var SendServerMessage = function(socket,msg){
   socket.emit("message", {roomName:"SERVER",message:msg, username:"Server Message", color:"EE0000"})
 }
 
+var sendServerToast = function(socket, msg){
+	socket.emit("messageToast", {message:msg});
+}
+
+var updateSocketObject = function(socket, clients){
+	var index = clients.indexOf(socket);
+    if (index > -1) {
+      clients.splice(index, 1);
+      clients.push(socket);
+    }
+}
+
 var getRandomColor = function(){
+	var c = "0123456789ABCDEF";
+	var colorList = c.split("");
 	var color = "";
 	for(var i =0; i < 6; i++){
 		var num = Math.floor((Math.random() * 16));
-		if(num < 10){
-			color += num;
-		}
-		else if(num == 10){
-				color += "a";
-		}
-		else if(num == 11){
-				color += "b";
-		}
-		else if(num == 12){
-				color += "c";
-		}
-		else if(num == 13){
-				color += "d";
-		}
-		else if(num == 14){
-				color += "e";
-		}
-		else if(num == 15){
-				color += "f";
-		}
-		else{
-			color += 0;
-		}
+		color += colorList[num];
 	}
-	console.log(color);
 	return color;
 }
-
-
-
 
 	var colorsData = [
 		"evil",
@@ -393,3 +380,5 @@ module.exports.getDatestamp = getDatestamp;
 module.exports.getRandomColor = getRandomColor;
 module.exports.getRandomName = getRandomName;
 module.exports.sendServerMessage = SendServerMessage;
+module.exports.sendServerToast = sendServerToast;
+module.exports.updateSocketObject = updateSocketObject;

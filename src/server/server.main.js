@@ -30,8 +30,8 @@ var clients = [];
 var WorldRooms = [];
 var publicRooms = 1;
 
-//var dbURL = "mongodb://localhost/";
-var dbURL = process.env.MONGOLAB_URI; //process.env.MONGOLAB_URI ||
+var dbURL = "mongodb://localhost/";
+//var dbURL = process.env.MONGOLAB_URI; //process.env.MONGOLAB_URI ||
 
 var db = mongoose.connect(dbURL, function(err){
     if(err){
@@ -52,8 +52,8 @@ if(process.env.REDISCLOUD_URL){
     redisPASS = redisURL.auth.split(":")[1];
 }
 
-var port = process.env.PORT || process.env.NODE_PORT || 3000;
-//var port = 3000;
+//var port = process.env.PORT || process.env.NODE_PORT || 3000;
+var port = 3000;
 app.use('/assets', express.static(path.resolve(__dirname+'./../public/')));
 app.use(compression());
 app.use(bodyParser.urlencoded({
@@ -87,7 +87,9 @@ console.log("route");
 io.sockets.on("connection",function(socket){
   //this method attached the handler onConnected to a new socket when it has connected
   //send the color and username created by the server back to the user for storage
-  socket.emit("receiveUserMetadata", {username:socket.username, usercolor:socket.color});
+  socket.username = util.getRandomName();
+  socket.usercolor = util.getRandomColor();
+  socket.emit("receiveUserMetadata", {username:socket.username, usercolor:socket.usercolor});
   //adds the new socket to the client list
   clients.push(socket);
   //the rooms that the client is connected to
@@ -96,11 +98,11 @@ io.sockets.on("connection",function(socket){
   //Server logs that a new connection has been made
   console.log("connected to the server");
   //callback function from the server to let the client know that they have connected
-	onConnected.onConnected(socket, clients);
-	onDisconnected.onDisconnected(socket, clients);
+	onConnected.onConnected(socket, clients, WorldRooms);
+	onDisconnected.onDisconnected(socket, clients, WorldRooms);
   onRoomJoinLeave.onRoomJoinLeave(socket, WorldRooms);
-  onRoomCreateDestroy.onRoomCreateDestroy(socket, WorldRooms, io.sockets);
-  onSocketLogin.onSocketLogin(socket);
+  onRoomCreateDestroy.onRoomCreateDestroy(socket, WorldRooms, io);
+  onSocketLogin.onSocketLogin(socket, clients);
   onRoomInvite.onRoomInvite(socket, WorldRooms, clients);
 
 });
