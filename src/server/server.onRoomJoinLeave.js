@@ -5,6 +5,7 @@ var roomHandler = require('../utilities/roomHandler.js');
 
 var onRoomJoinLeave = function(socket, WorldRooms){
   //join the specified room
+  //deprecated
   socket.on("joinRoom", function(data){
     var exists = roomHandler.checkRoomExist(WorldRooms, data.roomName);
     if(exists == true){
@@ -17,6 +18,7 @@ var onRoomJoinLeave = function(socket, WorldRooms){
       util.sendServerMessage(socket, "There is no room of the name " + data.roomName);
     }
   });
+  //lets the user leave a room
   socket.on("leaveRoom", function(data){
     var exists = roomHandler.checkRoomExist(socket.currentRooms, data.roomName);
     if(exists == true){

@@ -21,13 +21,13 @@ var onConnected = function(socket, clients, WorldRooms){
         util.sendServerMessage(socket, "You are not in a room called " + data.roomName);
       }
   });
-
+  //gets all the clients currently connected to the server
   socket.on("requestClientList", function(){
       //requests and returs the client list as a string
       util.sendServerMessage(socket, util.getClientListasString(clients));
       //socket.emit('message',{message:util.getClientListasString(clients), username: "server"});
   });
-
+  //returns the clients in the current room
   socket.on("requestClientsInRoom", function(data){
     var roomObj = roomHandler.retrieveRoomObject(WorldRooms, data.roomname);
     var list = "Users in Room: ";

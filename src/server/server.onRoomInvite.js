@@ -2,16 +2,20 @@ var util = require('../utilities/utils.js');
 var roomHandler = require('../utilities/roomHandler.js');
 
 var onRoomInvite = function(socket, WorldRooms, clients){
+    //use this to try to invite others to your room, but only if you are the owner of the current room
     socket.on("requestInviteOthers", function(data){
-        //get people
+        //get the room object
         var RoomInvitedTo = roomHandler.retrieveRoomObject(WorldRooms, data.roomname);
         if(!RoomInvitedTo){
+          //if it does not exist return naw
           return;
         }
+        //checks if the user is the owner of the given room
         if(RoomInvitedTo.creator != socket){
           util.sendServerToast(socket, "You are not the owner of this room.");
           return;
         }
+        //cant send more than one round of invitations
         if(RoomInvitedTo.invitationsSent==false  && RoomInvitedTo.isFull == false){
           if(clients.length <= 4){
             for(var i = 0; i < clients.length; i++){
@@ -22,6 +26,7 @@ var onRoomInvite = function(socket, WorldRooms, clients){
             }
           }
           else{
+            //keep getting lists of users until all 3 are unique
             while(true){
               var threeClients = get3RandomClient(clients);
               if(checkForUniqueUsers(threeClients, socket)){
@@ -45,6 +50,7 @@ var onRoomInvite = function(socket, WorldRooms, clients){
 
     });
 };
+//gets 3 random clients from the list of clients
 var get3RandomClient = function(clients){
   var clientList = [];
   for(var i = 0; i < 3; i++){
@@ -53,7 +59,7 @@ var get3RandomClient = function(clients){
   }
   return clientList;
 }
-
+//cheks if the sockets in the given list are unique
 var checkForUniqueUsers = function(userList, socket){
   //checks if the host part of the list
   for(var j = 0; j < userList.length; j++){

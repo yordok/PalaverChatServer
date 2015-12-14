@@ -7,6 +7,7 @@ var onSocketLogin = function(socket, clients){
   socket.on("login", function(data){
     socket.username = " ";
     console.log("login username"+ socket.username);
+    //login to the server to get the proper user data
     userModel.userModel.authenticate(data.username, data.password, function(error, account){
       if(error){
         socket.emit("LoginError", {message:"Wrong username and password combo"});
@@ -45,6 +46,7 @@ var onSocketLogin = function(socket, clients){
       }
       else{
           console.log(data);
+          //reset preferences
           user.wantsCustomName = data.wantsCustomName;
           user.wantsCustomColor = data.wantsCustomColor;
           user.customName = data.CustomName;
@@ -72,7 +74,7 @@ var onSocketLogin = function(socket, clients){
     });
   });
 
-
+  //create an account
   socket.on("createAccount",function(data){
     userModel.userModel.generateHash(data.pass1, function (salt, hash){
       var userData = {

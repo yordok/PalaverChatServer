@@ -8,7 +8,13 @@ var createNewRoom = function(roomName, socket){
   //clientsInRoom: list of sockets of people in room ARRAY OF SOCKETS
   //isFull: if the room is full of people BOOLEAN
   //invitationsSent: if there have already been invitations sent BOOLEAN
-  var newRoomOBJ = {name:roomName, creator:socket, clientsInRoom: roomClients, isFull:false, invitationsSent:false};
+  //timeOfCreation: returns the time the room was created LONG
+  var newRoomOBJ = {name:roomName,
+     creator: socket,
+     clientsInRoom: roomClients,
+     isFull: false,
+     invitationsSent:false,
+     timeOfCreation: Date.now()};
   return newRoomOBJ;
 
 }
@@ -20,7 +26,7 @@ var retrieveRoomObject = function(RoomList, RoomName){
     }
   }
 }
-
+//removes the old roomObj from the list and reinterts
 var updateRoomObject = function(RoomList, Room){
   var index = RoomList.indexOf(Room);
     if (index > -1) {
@@ -29,7 +35,7 @@ var updateRoomObject = function(RoomList, Room){
     }
 
 }
-
+//removes a single socket from all the rooms
 var removeUserFromAllRooms = function(socket, worldRoomList){
   for(var i =0; i < worldRoomList.length; i++){
       var roomObj = worldRoomList[i];
@@ -50,7 +56,7 @@ var checkRoomExist = function(RoomList, RoomName){
   }
   return false;
 }
-
+//returns all the current rooms as a string list
 var getRoomListAsString = function(RoomList){
   var stringList = "";
   for(var i = 0; i < RoomList.length; i++){

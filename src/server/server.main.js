@@ -30,8 +30,8 @@ var clients = [];
 var WorldRooms = [];
 var publicRooms = 1;
 
-//var dbURL = "mongodb://localhost/";
-var dbURL = process.env.MONGOLAB_URI; //process.env.MONGOLAB_URI ||
+var dbURL = "mongodb://localhost/";
+//var dbURL = process.env.MONGOLAB_URI; //process.env.MONGOLAB_URI ||
 
 var db = mongoose.connect(dbURL, function(err){
     if(err){
@@ -52,8 +52,8 @@ if(process.env.REDISCLOUD_URL){
     redisPASS = redisURL.auth.split(":")[1];
 }
 
-var port = process.env.PORT || process.env.NODE_PORT || 3000;
-//var port = 3000;
+//var port = process.env.PORT || process.env.NODE_PORT || 3000;
+var port = 3000;
 app.use('/assets', express.static(path.resolve(__dirname+'./../public/')));
 app.use(compression());
 app.use(bodyParser.urlencoded({
@@ -108,6 +108,20 @@ io.sockets.on("connection",function(socket){
 });
 
 setInterval(function(){deleteUnusedSockets();}, 1000);
+setInterval(function(){deleteUnusedRooms();}, 50000);
+
+var deleteUnusedRooms = function(){
+  for(var i = 0; i < WorldRooms.length; i++){
+    //this will check if the room has existed for over an hour and if it has, it will destroy it.
+    if(WorldRooms[i].timeOfCreation >= WorldRooms[i].timeOfCreation + 3600000){
+      var index = WorldRooms.indexOf(i);
+      if (index > -1) {
+        clients.splice(index, 1);
+        console.log("Removed unused client");
+      }
+    }
+  }
+};
 
 //this is used to delete sockets that are are no longer connected
 var deleteUnusedSockets = function(){
@@ -120,4 +134,4 @@ var deleteUnusedSockets = function(){
       }
     }
   }
-}
+};
